@@ -41,30 +41,32 @@ public class MySqlAccess {
 
             // PreparedStatements can use variables and are more efficient
             preparedStatement = connect
-                    .prepareStatement("insert into  feedback.comments values (default, ?, ?, ?, ? , ?, ?)");
+            //        .prepareStatement("insert into  feedback.comments values (default, ?, ?, ?, ? , ?, ?)");
+                    .prepareStatement("insert into  company.employee values (default, ?, ?, ?, ? , ?, ?, ?)");
             // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
             // Parameters start with 1
-            preparedStatement.setString(1, "Test");
-            preparedStatement.setString(2, "TestEmail");
-            preparedStatement.setString(3, "TestWebpage");
-            preparedStatement.setDate(4, new java.sql.Date(2009, 12, 11));
-            preparedStatement.setString(5, "TestSummary");
-            preparedStatement.setString(6, "TestComment");
+            preparedStatement.setString(1, "Vorname");
+            preparedStatement.setString(2, "Nachname");
+            preparedStatement.setDate(3, new java.sql.LocalDate(2000, 12, 24));
+            preparedStatement.setInt(4, 2);
+            preparedStatement.setFloat(5, 3333.33f);
+            preparedStatement.setString(6, "w");
+            preparedStatement.setInt(7, 2);
             preparedStatement.executeUpdate();
 
             preparedStatement = connect
-                    .prepareStatement("SELECT myuser, webpage, datum, summary, COMMENTS from feedback.comments");
+                    .prepareStatement("SELECT * from company.employee");
             resultSet = preparedStatement.executeQuery();
             writeResultSet(resultSet);
 
             // Remove again the insert comment
             preparedStatement = connect
-                    .prepareStatement("delete from feedback.comments where myuser= ? ; ");
-            preparedStatement.setString(1, "Test");
+                    .prepareStatement("delete from company.employee where lastName= ? ; ");
+            preparedStatement.setString(1, "Nachname");
             preparedStatement.executeUpdate();
 
             resultSet = statement
-                    .executeQuery("select * from feedback.comments");
+                    .executeQuery("select * from company.employee");
             writeMetaData(resultSet);
 
         } catch (Exception e) {
