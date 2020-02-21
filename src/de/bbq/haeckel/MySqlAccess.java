@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class MySqlAccess {
@@ -26,28 +27,25 @@ public class MySqlAccess {
             Class.forName("com.mysql.jdbc.Driver");
 
             // Setup the connection with the DB
-            connect = DriverManager
-//                    .getConnection("jdbc:mysql://" + host + "/feedback?"
-                    .getConnection("jdbc:mysql://" + host + "/company?"
-                            + "user=" + user + "&password=" + passwd );
+            connect = DriverManager.
+                    getConnection("jdbc:mysql://" + host + "/company?" +
+                            "user=" + user + "&password=" + passwd );
 
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
             // Result set get the result of the SQL query
-//            resultSet = statement
-//                    .executeQuery("select * from feedback.comments");
             resultSet = statement.executeQuery("SELECT * FROM employee ");
             writeResultSet(resultSet);
 
             // PreparedStatements can use variables and are more efficient
             preparedStatement = connect
-            //        .prepareStatement("insert into  feedback.comments values (default, ?, ?, ?, ? , ?, ?)");
                     .prepareStatement("insert into  company.employee values (default, ?, ?, ?, ? , ?, ?, ?)");
-            // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
+
             // Parameters start with 1
             preparedStatement.setString(1, "Vorname");
             preparedStatement.setString(2, "Nachname");
-            preparedStatement.setDate(3, new java.sql.LocalDate(2000, 12, 24));
+       //     preparedStatement.setDate(3, new java.sql.Date(2000,12,24)); is deprecated
+            preparedStatement.setObject(3 , LocalDate.of(2001, 12, 24)  );
             preparedStatement.setInt(4, 2);
             preparedStatement.setFloat(5, 3333.33f);
             preparedStatement.setString(6, "w");
@@ -95,7 +93,7 @@ public class MySqlAccess {
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
-            // e.g. resultSet.getSTring(2);
+            // e.g. resultSet.getString(2);
             int id = resultSet.getInt("id");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
